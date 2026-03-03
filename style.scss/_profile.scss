@@ -277,3 +277,18 @@ body{
     opacity: 1;
     transform: translateY(0);
 }
+
+.toast.success {
+    background-color: white;
+    color: green;
+    border-left: 4px solid green;
+}
+
+/* ERROR STYLE */
+.toast.error {
+    background-color: #ffe5e5;
+    color: red;
+    border-left: 4px solid red;
+}
+
+

@@ -137,33 +137,48 @@ const toast = document.getElementById("toast");
 
 let isFollowing = false;
 
-function showToast(message){
+// 🔔 Toast Function (Success + Error)
+function showToast(message, type = "success") {
 
     toast.textContent = message;
+
+    // Remove previous types
+    toast.classList.remove("success", "error");
+
+    // Add new type
+    toast.classList.add(type);
+
+    // Restart animation (prevents glitch on fast clicks)
+    toast.classList.remove("show");
+    void toast.offsetWidth;
     toast.classList.add("show");
 
-    setTimeout(()=>{
+    setTimeout(() => {
         toast.classList.remove("show");
-    },2000);
-
+    }, 2000);
 }
 
-followBtn.addEventListener("click",()=>{
 
-    if(!isFollowing){
+// 👤 Follow Button Click
+followBtn.addEventListener("click", () => {
+
+    if (!isFollowing) {
 
         followBtn.textContent = "Following";
-        showToast("You are now following this user");
+        followBtn.classList.add("following");
+
+        showToast("Now following this user ✅", "success");
 
         isFollowing = true;
 
     } else {
 
         followBtn.textContent = "Follow";
-        showToast("You unfollowed this user");
+        followBtn.classList.remove("following");
+
+        showToast("Unfollowed this user ❌", "error");
 
         isFollowing = false;
-
     }
 
 });

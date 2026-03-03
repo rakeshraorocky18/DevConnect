@@ -854,6 +854,19 @@ body {
   transform: translateY(0);
 }
 
+.toast.success {
+  background-color: white;
+  color: green;
+  border-left: 4px solid green;
+}
+
+/* ERROR STYLE */
+.toast.error {
+  background-color: #ffe5e5;
+  color: red;
+  border-left: 4px solid red;
+}
+
 body {
   padding-top: 60px;
 }
@@ -1140,6 +1153,38 @@ input, textarea {
   display: flex;
   flex-direction: column;
   gap: 15px;
+}
+
+.toast {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: #111;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.3s ease;
+  z-index: 2000;
+}
+
+.toast.show {
+  opacity: 1;
+}
+
+/* SUCCESS STYLE */
+.toast.success {
+  background-color: white;
+  color: green;
+  border-left: 4px solid green;
+}
+
+/* ERROR STYLE */
+.toast.error {
+  background-color: #ffe5e5;
+  color: red;
+  border-left: 4px solid red;
 }
 
 .footer-section {

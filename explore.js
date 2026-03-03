@@ -1,36 +1,52 @@
 const userContainer = document.getElementById("user-container");
 const footer = document.getElementById("footer");
+const searchInput = document.getElementById("search-input");
 
-// hide footer while loading
 footer.style.display = "none";
+
+let allUsers = []; // store users globally
 
 // redirect to profile page
 function viewProfile(id) {
   window.location.href = `profile.html?id=${id}`;
 }
 
+// Load users initially
 async function loadUsers() {
   try {
 
-    // fetch users
     const usersRes = await fetch("https://jsonplaceholder.typicode.com/users");
     const users = await usersRes.json();
 
-    for (let i = 0; i < users.length; i++) {
+    allUsers = users; // save for search
 
-      const user = users[i];
+    await displayUsers(users);
 
-      // fetch posts for post count
-      const postsRes = await fetch(`https://jsonplaceholder.typicode.com/posts?userId=${user.id}`);
-      const posts = await postsRes.json();
+    footer.style.display = "block";
 
-      // generate avatar using user id
-      const avatar = `https://i.pravatar.cc/150?img=${user.id}`;
+  } catch (error) {
+    console.error("Error loading users:", error);
+  }
+}
 
-      const userCard = document.createElement("div");
-      userCard.classList.add("user-details");
+// Display users function (reusable for search)
+async function displayUsers(users) {
 
-      userCard.innerHTML = `
+  userContainer.innerHTML = "";
+
+  for (let user of users) {
+
+    const postsRes = await fetch(
+      `https://jsonplaceholder.typicode.com/posts?userId=${user.id}`
+    );
+    const posts = await postsRes.json();
+
+    const avatar = `https://i.pravatar.cc/150?img=${user.id}`;
+
+    const userCard = document.createElement("div");
+    userCard.classList.add("user-details");
+
+    userCard.innerHTML = `
         <div class="user-top-color"></div>
 
         <div class="users-photo">
@@ -58,17 +74,23 @@ async function loadUsers() {
                 View Profile
             </button>
         </div>
-      `;
+    `;
 
-      userContainer.appendChild(userCard);
-    }
-
-    // show footer after loading
-    footer.style.display = "block";
-
-  } catch (error) {
-    console.error("Error loading users:", error);
+    userContainer.appendChild(userCard);
   }
 }
+
+// 🔍 SEARCH FILTER
+searchInput.addEventListener("input", async function () {
+
+  const value = searchInput.value.toLowerCase();
+
+  const filteredUsers = allUsers.filter(user =>
+    user.name.toLowerCase().includes(value) ||
+    user.username.toLowerCase().includes(value)
+  );
+
+  await displayUsers(filteredUsers);
+});
 
 loadUsers();
